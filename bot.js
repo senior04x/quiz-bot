@@ -206,7 +206,21 @@ bot.on('callback_query', (query) => {
 
         bot.answerCallbackQuery(query.id);
         
-        bot.sendMessage(chatId, "Boshlashga tayyormisiz? 👇", {
+        let subjectName = "Test";
+        if (subjectFile === 'test.md') subjectName = "Xalqaro Moliya";
+        if (subjectFile === 'test2.md') subjectName = "Islomiy Bank ishi";
+        if (subjectFile === 'test3.md') subjectName = "Bank ishiga kirish";
+        
+        let rangeText = "";
+        if (start === 'full') {
+            rangeText = "(Tasodifiy 25 ta) testni";
+        } else {
+            rangeText = `(${parseInt(start)+1} - ${end} gacha) bo'lgan testni`;
+        }
+        
+        const confirmMsg = `${subjectName} ${rangeText} boshlashga tayyormisiz? 👇`;
+
+        bot.sendMessage(chatId, confirmMsg, {
             reply_markup: {
                 inline_keyboard: [
                     [{ text: "Men tayyorman! 🚀", callback_data: `ready_${subjectFile}_${start}_${end}` }]
