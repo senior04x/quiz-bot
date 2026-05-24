@@ -492,13 +492,25 @@ function finishTest(chatId, session) {
         `🏆 Reyting: ${rankInfo.totalParticipants} kishi orasida ${rankInfo.rank}-o'rin!\n\n` +
         `📝 Xulosa: ${msg}`;
     
+    const totalQuestions = allData[session.subjectFile].length;
+    const keyboard = [];
+    const paginationRow = [];
+
+    if (session.startIdx >= SET_SIZE) {
+        paginationRow.push({ text: '⬅️ Oldingi', callback_data: `start_${session.subjectFile}_${session.startIdx - SET_SIZE}_${session.startIdx}` });
+    }
+    if (session.endIdx < totalQuestions) {
+        paginationRow.push({ text: 'Keyingi ➡️', callback_data: `start_${session.subjectFile}_${session.endIdx}_${Math.min(session.endIdx + SET_SIZE, totalQuestions)}` });
+    }
+    if (paginationRow.length > 0) keyboard.push(paginationRow);
+
+    keyboard.push([{ text: '🔄 Qayta ishlash', callback_data: `retake_${session.subjectFile}_${session.originalStart}_${session.originalEnd}` }]);
+    keyboard.push([{ text: '🏠 Bosh menuga qaytish', callback_data: 'home' }]);
+
     bot.sendMessage(chatId, finalMsg, {
         parse_mode: "Markdown",
         reply_markup: {
-            inline_keyboard: [
-                [{ text: '🏠 Bosh menuga qaytish', callback_data: 'home' }],
-                [{ text: '🔄 Qayta ishlash', callback_data: `retake_${session.subjectFile}_${session.originalStart}_${session.originalEnd}` }]
-            ]
+            inline_keyboard: keyboard
         }
     });
 
