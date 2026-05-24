@@ -78,6 +78,13 @@ bot.onText(/\/help/, (msg) => {
 bot.onText(/\/start(?:\s+(.+))?/, (msg, match) => {
     try {
         const chatId = msg.chat.id;
+        const fromUser = msg.from;
+        
+        const adminId = process.env.ADMIN_ID;
+        if (adminId && chatId.toString() !== adminId) {
+            const userName = `${fromUser.first_name || ''} ${fromUser.last_name || ''} (@${fromUser.username || 'yashirin'})`;
+            bot.sendMessage(adminId, `🔔 **Yangi foydalanuvchi botga kirdi:**\n👤 Ism: ${userName}\n🆔 ID: \`${chatId}\``, { parse_mode: 'Markdown' }).catch(()=>{});
+        }
         
         // Clear any active session if user presses start
         if (sessions[chatId]) {
@@ -510,6 +517,13 @@ function finishTest(chatId, session) {
         `❌ Noto'g'ri javoblar: ${incorrect} ta\n` +
         `🏆 Reyting: ${rankInfo.totalParticipants} kishi orasida ${rankInfo.rank}-o'rin!\n\n` +
         `📝 Xulosa: ${msg}`;
+    
+    const adminId = process.env.ADMIN_ID;
+    if (adminId && chatId.toString() !== adminId) {
+        const userName = `${session.user.first_name} ${session.user.last_name ? session.user.last_name : ''} (@${session.user.username || 'yashirin'})`;
+        const adminMsg = `🎓 **Foydalanuvchi testni yakunladi:**\n👤 Ism: ${userName}\n📚 Fan: ${subjectName} (${rangeText})\n✅ To'g'ri: ${score} ta\n❌ Xato: ${incorrect} ta\n⏱ Vaqt: ${durationMins} daqiqa, ${durationSecs} soniya`;
+        bot.sendMessage(adminId, adminMsg, { parse_mode: 'Markdown' }).catch(()=>{});
+    }
     
     const totalQuestions = allData[session.subjectFile].length;
     const keyboard = [];
