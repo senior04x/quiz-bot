@@ -484,7 +484,26 @@ function finishTest(chatId, session) {
         else msg = `Mukammal natija, yuz foiz to'g'ri, lekin kibrlanmang, o'rganishda davom eting. 🥇`;
     }
 
+    let subjectName = "Test";
+    if (session.subjectFile === 'test.md') subjectName = "Xalqaro moliyadan";
+    if (session.subjectFile === 'test2.md') subjectName = "Islomiy Bank ishidan";
+    if (session.subjectFile === 'test3.md') subjectName = "Bank ishiga kirish";
+
+    let rangeText = "";
+    let sStart = 0;
+    let sEnd = 0;
+    let isFull = session.originalStart === 'full';
+    
+    if (isFull) {
+        rangeText = "(Tasodifiy)";
+    } else {
+        sStart = parseInt(session.originalStart);
+        sEnd = parseInt(session.originalEnd);
+        rangeText = `${sStart + 1} - ${sEnd} gacha`;
+    }
+
     const finalMsg = `📊 **Test yakunlandi!**\n\n` +
+        `📚 Fan: ${subjectName} (${rangeText})\n` +
         `👤 Ism: ${session.user.first_name} ${session.user.last_name ? session.user.last_name : ''}\n` +
         `⏱ Vaqt: ${durationMins} daqiqa, ${durationSecs} soniya\n\n` +
         `✅ To'g'ri javoblar: ${score} ta\n` +
@@ -496,11 +515,13 @@ function finishTest(chatId, session) {
     const keyboard = [];
     const paginationRow = [];
 
-    if (session.startIdx >= SET_SIZE) {
-        paginationRow.push({ text: '⬅️ Oldingi', callback_data: `start_${session.subjectFile}_${session.startIdx - SET_SIZE}_${session.startIdx}` });
-    }
-    if (session.endIdx < totalQuestions) {
-        paginationRow.push({ text: 'Keyingi ➡️', callback_data: `start_${session.subjectFile}_${session.endIdx}_${Math.min(session.endIdx + SET_SIZE, totalQuestions)}` });
+    if (!isFull) {
+        if (sStart >= SET_SIZE) {
+            paginationRow.push({ text: '⬅️ Oldingi', callback_data: `startq_${session.subjectFile}_${sStart - SET_SIZE}_${sStart}` });
+        }
+        if (sEnd < totalQuestions) {
+            paginationRow.push({ text: 'Keyingi ➡️', callback_data: `startq_${session.subjectFile}_${sEnd}_${Math.min(sEnd + SET_SIZE, totalQuestions)}` });
+        }
     }
     if (paginationRow.length > 0) keyboard.push(paginationRow);
 
