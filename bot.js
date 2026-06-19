@@ -107,6 +107,7 @@ bot.onText(/\/start(?:\s+(.+))?/, (msg, match) => {
             if (subjectFile === 'test.md') subjectName = "Xalqaro Moliya";
             if (subjectFile === 'test2.md') subjectName = "Islomiy Bank ishi";
             if (subjectFile === 'test3.md') subjectName = "Bank ishiga kirish";
+            if (subjectFile === 'test5.md') subjectName = "Sug'urta ishi";
             
             let qCount = 25;
             let rangeText = "";
@@ -144,7 +145,8 @@ function sendSubjectMenu(chatId) {
             inline_keyboard: [
                 [{ text: '📚 Xalqaro moliyadan', callback_data: 'sub_test.md' }],
                 [{ text: '📚 Islomiy Bank ishidan', callback_data: 'sub_test2.md' }],
-                [{ text: '📚 Bank ishiga kirish', callback_data: 'sub_test3.md' }]
+                [{ text: '📚 Bank ishiga kirish', callback_data: 'sub_test3.md' }],
+                [{ text: '📚 Sug\'urta ishidan', callback_data: 'sub_test5.md' }]
             ]
         }
     };
@@ -175,6 +177,7 @@ bot.on('callback_query', (query) => {
         if (subjectFile === 'test.md') subjectName = "Xalqaro Moliya";
         if (subjectFile === 'test2.md') subjectName = "Islomiy Bank ishi";
         if (subjectFile === 'test3.md') subjectName = "Bank ishiga kirish";
+        if (subjectFile === 'test5.md') subjectName = "Sug'urta ishi";
         
         let qCount = 25;
         let rangeText = "";
@@ -210,6 +213,7 @@ bot.on('callback_query', (query) => {
         if (subjectFile === 'test.md') subjectName = "Xalqaro Moliya";
         if (subjectFile === 'test2.md') subjectName = "Islomiy Bank ishi";
         if (subjectFile === 'test3.md') subjectName = "Bank ishiga kirish";
+        if (subjectFile === 'test5.md') subjectName = "Sug'urta ishi";
         
         let rangeText = "";
         if (start === 'full') {
@@ -509,6 +513,7 @@ function finishTest(chatId, session) {
     if (session.subjectFile === 'test.md') subjectName = "Xalqaro moliyadan";
     if (session.subjectFile === 'test2.md') subjectName = "Islomiy Bank ishidan";
     if (session.subjectFile === 'test3.md') subjectName = "Bank ishiga kirish";
+    if (session.subjectFile === 'test5.md') subjectName = "Sug'urta ishidan";
 
     let rangeText = "";
     let sStart = 0;
